@@ -74,6 +74,8 @@ button { font: inherit; cursor: pointer; }
 .header-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
 .logo b { color: var(--hot); font-weight: 800; }
+.logo-img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 14px -4px rgba(238,70,145,.5); border: 2px solid #fff; flex: none; }
+.footer-logo .logo-img { width: 40px; height: 40px; }
 .logo-mark { width: 36px; height: 36px; border-radius: 11px; background: var(--grad); color: #fff; display: grid; place-items: center; box-shadow: var(--shadow-pink); }
 .logo-mark svg { width: 24px; height: 24px; }
 .nav-list { display: flex; gap: 6px; }
@@ -207,7 +209,13 @@ button { font: inherit; cursor: pointer; }
 .stats-note { margin-top: 32px; font-size: 13px; color: rgba(255,255,255,.5); }
 
 /* ---------- Reels ---------- */
-.work { overflow: hidden; }
+.work { overflow: hidden; padding-top: clamp(48px, 7vw, 90px); background: linear-gradient(180deg, transparent, var(--blush-2) 40%, transparent); }
+.work .carousel-controls { justify-content: center; margin: 4px 0 18px; }
+.work .counter { min-width: 76px; text-align: center; margin: 0 4px; }
+.play-toggle .i-play { display: none; }
+.play-toggle[aria-pressed="true"] .i-play { display: block; }
+.play-toggle[aria-pressed="true"] .i-pause { display: none; }
+.work .progress { max-width: 420px; margin: 0 auto; }
 .carousel-controls { display: flex; align-items: center; gap: 10px; }
 .counter { font-family: var(--display); font-weight: 600; font-size: 14px; color: var(--muted); min-width: 72px; text-align: right; margin-right: 4px; font-variant-numeric: tabular-nums; }
 .round-btn { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line); background: #fff; color: var(--ink); display: grid; place-items: center; transition: background .2s, color .2s, transform .2s, opacity .2s; }
@@ -221,20 +229,21 @@ button { font: inherit; cursor: pointer; }
 .reel-rail {
   display: flex; gap: 18px; overflow-x: auto; overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory; scroll-behavior: smooth;
-  padding: 8px max(var(--gutter), calc((100vw - 1240px) / 2 + var(--gutter))) 28px;
-  scroll-padding-inline: max(var(--gutter), calc((100vw - 1240px) / 2 + var(--gutter)));
+  padding: 8px calc(50vw - var(--reel-w) / 2) 28px;
   scrollbar-width: none; cursor: grab;
 }
 .reel-rail::-webkit-scrollbar { display: none; }
 .reel-rail.dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
 .reel-rail.dragging iframe { pointer-events: none; }
 .reel-card {
-  flex: 0 0 var(--reel-w); height: var(--reel-h); scroll-snap-align: start;
+  flex: 0 0 var(--reel-w); height: var(--reel-h); scroll-snap-align: center;
   border-radius: 22px; overflow: hidden; position: relative; background: #fff;
   box-shadow: var(--shadow); border: 1px solid var(--line);
   transition: transform .4s var(--ease), box-shadow .4s var(--ease);
 }
-.reel-card:hover { transform: translateY(-6px); box-shadow: 0 28px 50px -22px rgba(238,70,145,.45); }
+.reel-card { opacity: .55; transform: scale(.92); }
+.reel-card.is-active { opacity: 1; transform: scale(1); box-shadow: 0 30px 60px -26px rgba(238,70,145,.55); }
+.reel-card.is-active:hover { transform: translateY(-6px); box-shadow: 0 28px 50px -22px rgba(238,70,145,.45); }
 .reel-card iframe { width: 100%; height: 100%; border: 0; background: #fff; position: relative; z-index: 1; opacity: 0; transition: opacity .5s; }
 .reel-card.loaded iframe { opacity: 1; }
 .reel-poster {
@@ -440,3 +449,8 @@ button { font: inherit; cursor: pointer; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* Logo badge in hero */
+.float-card.logo-badge { padding: 6px; border-radius: 50%; right: -2%; top: -2%; }
+.logo-badge img { width: clamp(96px, 11vw, 132px); height: auto; border-radius: 50%; display: block; }
+@media (max-width: 560px) { .logo-img { width: 42px; height: 42px; } }

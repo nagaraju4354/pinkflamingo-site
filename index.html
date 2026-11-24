@@ -9,7 +9,9 @@
   <meta property="og:title" content="Pink Flamingo Buzz | We create the buzz. You build the brand." />
   <meta property="og:description" content="Influencer marketing, celebrity management and brand activations from Hyderabad." />
   <meta property="og:type" content="website" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF2382'/%3E%3Cstop offset='1' stop-color='%23EE4691'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3Ctext x='32' y='43' font-family='Arial Black,Arial' font-size='30' font-weight='900' text-anchor='middle' fill='white'%3EPF%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/webp" href="assets/img/logo.webp" />
+  <link rel="apple-touch-icon" href="assets/img/logo.webp" />
+  <meta property="og:image" content="assets/img/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Unbounded:wght@500;700;800;900&display=swap" rel="stylesheet" />
@@ -23,16 +25,14 @@
   <header class="site-header" id="top">
     <div class="container header-inner">
       <a href="#top" class="logo" aria-label="Pink Flamingo Buzz home">
-        <span class="logo-mark" aria-hidden="true">
-          <svg viewBox="0 0 40 40"><path d="M24 6c-5 0-8 3.5-8 7.5 0 3 2 5 4.5 6.5-4 1.5-9 5-9 11 0 1.5.3 3 .8 4h4c-.7-1-1-2.4-1-3.7 0-4.5 4-7.6 8.4-8.6l.8-.2-.5-.7C21 20 19.6 17.6 19.6 14c0-2.6 2-4.5 4.4-4.5 2 0 3.6 1.2 4.1 3l-3.4 1.6 5 1.6V13c0-4-2.5-7-5.7-7z" fill="currentColor"/></svg>
-        </span>
+        <img class="logo-img" src="assets/img/logo.webp" alt="" width="44" height="44" />
         <span class="logo-text">Pink Flamingo <b>Buzz</b></span>
       </a>
 
       <nav class="nav" aria-label="Primary">
         <ul class="nav-list" id="nav-list">
-          <li><a href="#services">Services</a></li>
           <li><a href="#work">Work</a></li>
+          <li><a href="#services">Services</a></li>
           <li><a href="#founders">Founders</a></li>
           <li><a href="#process">Process</a></li>
           <li class="nav-cta-mobile"><a href="#contact" class="btn btn-primary">Start a campaign</a></li>
@@ -87,9 +87,32 @@
             </div>
           </div>
           <div class="float-card fc1"><b>100+</b><span>Brand collabs</span></div>
-          <div class="float-card fc2"><span class="heart">❤</span><b>Buzz</b><span>going live</span></div>
+          <div class="float-card fc2 logo-badge"><img src="assets/img/logo.webp" alt="" width="120" height="120" /></div>
           <div class="float-card fc3"><b>50+</b><span>Celebrity connections</span></div>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ WORK / REELS ============ -->
+    <section class="section work" id="work">
+      <div class="container">
+        <div class="section-head center">
+          <p class="eyebrow reveal">Client work</p>
+          <h2 class="h2 reveal">Reels that got people <span class="grad-text">talking.</span></h2>
+          <p class="section-sub reveal">Our latest campaigns, rolling automatically. Tap any reel to play it, or swipe to browse.</p>
+        </div>
+      </div>
+      <div class="reel-rail-wrap">
+        <ul class="reel-rail" id="reel-rail" aria-label="Client reels"></ul>
+      </div>
+      <div class="container">
+        <div class="carousel-controls">
+          <button class="round-btn" id="reel-prev" aria-label="Previous reel"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="round-btn play-toggle" id="reel-pause" aria-label="Pause auto-scroll" aria-pressed="false"><svg class="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><svg class="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button>
+          <span class="counter" id="reel-counter" aria-live="polite">01 / 20</span>
+          <button class="round-btn" id="reel-next" aria-label="Next reel"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <div class="progress" aria-hidden="true"><span id="reel-progress"></span></div>
       </div>
     </section>
 
@@ -105,7 +128,7 @@
     <section class="section about" id="about">
       <div class="container about-grid">
         <div>
-          <p class="eyebrow reveal">01 / The agency</p>
+          <p class="eyebrow reveal">The agency</p>
           <h2 class="h2 reveal">Where influence meets <span class="grad-text">imagination.</span></h2>
         </div>
         <div class="about-copy reveal">
@@ -119,7 +142,7 @@
 
       <div class="container story">
         <div class="story-card dark reveal">
-          <p class="eyebrow light">02 / Our story</p>
+          <p class="eyebrow light">Our story</p>
           <h3>Founded by creators.<br />Built for brands.</h3>
           <p>Our founders bring first-hand creator experience to every campaign. We understand both sides of the collaboration, and work to make the connection stronger.</p>
         </div>
@@ -138,7 +161,7 @@
     <section class="section services" id="services">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow reveal">03 / What we do</p>
+          <p class="eyebrow reveal">What we do</p>
           <h2 class="h2 reveal">One partner. Multiple ways to create <span class="grad-text">impact.</span></h2>
           <p class="section-sub reveal">Flexible services that work on their own or come together as one integrated campaign.</p>
         </div>
@@ -192,35 +215,11 @@
       <p class="container stats-note">Talent is shortlisted on campaign fit, audience, location, deliverables and budget. Participation is subject to availability and confirmation.</p>
     </section>
 
-    <!-- ============ WORK / REELS ============ -->
-    <section class="section work" id="work">
-      <div class="container">
-        <div class="section-head row">
-          <div>
-            <p class="eyebrow reveal">04 / Client work</p>
-            <h2 class="h2 reveal">Reels that got people <span class="grad-text">talking.</span></h2>
-            <p class="section-sub reveal">Tap any reel to play it right here. Swipe or use the arrows to browse.</p>
-          </div>
-          <div class="carousel-controls reveal">
-            <span class="counter" id="reel-counter" aria-live="polite">01 / 20</span>
-            <button class="round-btn" id="reel-prev" aria-label="Previous reels"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="round-btn" id="reel-next" aria-label="Next reels"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          </div>
-        </div>
-      </div>
-      <div class="reel-rail-wrap">
-        <ul class="reel-rail" id="reel-rail" aria-label="Client reels"></ul>
-      </div>
-      <div class="container">
-        <div class="progress" aria-hidden="true"><span id="reel-progress"></span></div>
-      </div>
-    </section>
-
     <!-- ============ FOUNDERS ============ -->
     <section class="section founders" id="founders">
       <div class="container">
         <div class="section-head center">
-          <p class="eyebrow reveal">05 / Meet the founders</p>
+          <p class="eyebrow reveal">Meet the founders</p>
           <h2 class="h2 reveal">Creators first. <span class="grad-text">Always.</span></h2>
           <p class="section-sub reveal">Two creators who've lived the brand-collab life, now building campaigns for brands like yours.</p>
         </div>
@@ -233,7 +232,7 @@
     <section class="section launch">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow reveal">06 / Launch strategy</p>
+          <p class="eyebrow reveal">Launch strategy</p>
           <h2 class="h2 reveal">Build anticipation before the <span class="grad-text">big reveal.</span></h2>
           <p class="section-sub reveal">Our pre-buzz approach helps a new brand, product or location enter the conversation.</p>
         </div>
@@ -251,7 +250,7 @@
     <section class="section experiences">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow reveal">07 / Experiences</p>
+          <p class="eyebrow reveal">Experiences</p>
           <h2 class="h2 reveal">Turn brand moments into <span class="grad-text">shared experiences.</span></h2>
         </div>
         <div class="exp-grid">
@@ -267,7 +266,7 @@
     <section class="section process" id="process">
       <div class="container">
         <div class="section-head center">
-          <p class="eyebrow reveal">08 / How we work</p>
+          <p class="eyebrow reveal">How we work</p>
           <h2 class="h2 reveal">A clear process from <span class="grad-text">brief to buzz.</span></h2>
           <p class="section-sub reveal">A coordinated workflow keeps expectations, timelines and deliverables aligned.</p>
         </div>
@@ -285,7 +284,7 @@
     <section class="section why">
       <div class="container why-grid">
         <div class="why-head">
-          <p class="eyebrow reveal">09 / Why Pink Flamingo Buzz</p>
+          <p class="eyebrow reveal">Why Pink Flamingo Buzz</p>
           <h2 class="h2 reveal">More than a talent list. A <span class="grad-text">creative partner.</span></h2>
           <p class="section-sub reveal">We combine creator insight with thoughtful campaign coordination.</p>
         </div>
@@ -334,7 +333,7 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <a href="#top" class="logo footer-logo"><span class="logo-text">Pink Flamingo <b>Buzz</b></span></a>
+      <a href="#top" class="logo footer-logo"><img class="logo-img" src="assets/img/logo.webp" alt="" width="40" height="40" loading="lazy" /><span class="logo-text">Pink Flamingo <b>Buzz</b></span></a>
       <p>Influencer Marketing · Celebrity Management · Brand Activations</p>
       <p class="small">© <span id="year"></span> Pink Flamingo Buzz · Hyderabad, India</p>
     </div>

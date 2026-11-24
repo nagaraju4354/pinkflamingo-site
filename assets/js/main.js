@@ -92,24 +92,56 @@
     Array.prototype.forEach.call(rail.children, loadReel);
   }
 
-  // Arrows, counter, progress
-  var prev = $("#reel-prev"), next = $("#reel-next"), counter = $("#reel-counter"), bar = $("#reel-progress");
-  var step = function () { var c = rail.children[0]; return c ? c.getBoundingClientRect().width + 18 : 300; };
-  var perView = function () { return Math.max(1, Math.floor((rail.clientWidth + 18) / step())); };
-  prev.addEventListener("click", function () { rail.scrollBy({ left: -step() * perView(), behavior: "smooth" }); });
-  next.addEventListener("click", function () { rail.scrollBy({ left: step() * perView(), behavior: "smooth" }); });
-  var updateRail = function () {
-    var max = rail.scrollWidth - rail.clientWidth;
-    var idx = Math.min(reels.length, Math.round(rail.scrollLeft / step()) + 1);
-    counter.textContent = pad(idx) + " / " + pad(reels.length);
-    prev.disabled = rail.scrollLeft < 4;
-    next.disabled = rail.scrollLeft > max - 4;
-    var vis = rail.clientWidth / rail.scrollWidth;
-    bar.style.width = Math.min(100, (vis + (max > 0 ? rail.scrollLeft / max : 1) * (1 - vis)) * 100) + "%";
+  // ---- Carousel: centered active card, arrows, counter, progress, auto-scroll ----
+  var prev = $("#reel-prev"), next = $("#reel-next"), counter = $("#reel-counter"), bar = $("#reel-progress"), pauseBtn = $("#reel-pause");
+  var cards = Array.prototype.slice.call(rail.children);
+  var current = 0;
+  var centerOf = function (i) { var c = cards[i]; return c.offsetLeft + c.offsetWidth / 2 - rail.clientWidth / 2; };
+  var goTo = function (i, smooth) {
+    if (!cards.length) return;
+    current = (i + cards.length) % cards.length;
+    rail.scrollTo({ left: centerOf(current), behavior: smooth === false ? "auto" : "smooth" });
   };
+  var nearest = function () {
+    var mid = rail.scrollLeft + rail.clientWidth / 2, best = 0, bd = Infinity;
+    cards.forEach(function (c, i) { var d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < bd) { bd = d; best = i; } });
+    return best;
+  };
+  var updateRail = function () {
+    var i = nearest(); current = i;
+    cards.forEach(function (c, k) { c.classList.toggle("is-active", k === i); });
+    counter.textContent = pad(i + 1) + " / " + pad(cards.length);
+    bar.style.width = ((i + 1) / cards.length * 100) + "%";
+  };
+  prev.addEventListener("click", function () { goTo(current - 1); kick(); });
+  next.addEventListener("click", function () { goTo(current + 1); kick(); });
   rail.addEventListener("scroll", function () { requestAnimationFrame(updateRail); }, { passive: true });
-  window.addEventListener("resize", updateRail);
-  updateRail();
+  window.addEventListener("resize", function () { goTo(current, false); });
+
+  // Auto-scroll: advance one reel every few seconds; pause while the visitor
+  // hovers, touches, focuses a reel (e.g. playing it), or presses pause.
+  var AUTO_MS = 3500, timer = null, hold = false, userPaused = false, inView = false;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var tick = function () { if (!hold && !userPaused && inView && !document.hidden) goTo(current + 1); };
+  var start = function () { stop(); if (!reduce) timer = setInterval(tick, AUTO_MS); };
+  var stop = function () { if (timer) clearInterval(timer); timer = null; };
+  var kick = function () { if (!userPaused) start(); };
+  rail.addEventListener("mouseenter", function () { hold = true; });
+  rail.addEventListener("mouseleave", function () { hold = false; });
+  rail.addEventListener("touchstart", function () { hold = true; }, { passive: true });
+  rail.addEventListener("touchend", function () { setTimeout(function () { hold = false; kick(); }, 4000); }, { passive: true });
+  // Clicking into an Instagram iframe moves focus to it: treat that as "watching".
+  window.addEventListener("blur", function () { if (document.activeElement && document.activeElement.tagName === "IFRAME" && rail.contains(document.activeElement)) { userPaused = true; syncPause(); } });
+  var syncPause = function () {
+    pauseBtn.setAttribute("aria-pressed", String(userPaused));
+    pauseBtn.setAttribute("aria-label", userPaused ? "Resume auto-scroll" : "Pause auto-scroll");
+  };
+  pauseBtn.addEventListener("click", function () { userPaused = !userPaused; syncPause(); if (!userPaused) start(); });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (en) { inView = en[0].isIntersecting; }, { threshold: 0.35 }).observe(rail);
+  } else { inView = true; }
+  if (reduce) { userPaused = true; syncPause(); }
+  requestAnimationFrame(function () { goTo(0, false); updateRail(); start(); });
 
   // Keyboard + mouse drag (touch uses native swipe)
   rail.tabIndex = 0;
@@ -132,11 +164,7 @@
   window.addEventListener("pointerup", function () {
     if (!drag) return;
     var moved = drag.moved; drag = null;
-    if (moved) {
-      rail.classList.remove("dragging");
-      // snap to nearest card
-      var s = step(); rail.scrollTo({ left: Math.round(rail.scrollLeft / s) * s, behavior: "smooth" });
-    }
+    if (moved) { rail.classList.remove("dragging"); goTo(nearest()); kick(); }
   });
 
   /* ---------- Founders ---------- */

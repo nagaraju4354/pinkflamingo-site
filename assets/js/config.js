@@ -7,8 +7,8 @@
 window.PFB_CONFIG = {
   contact: {
     email: "hello@pinkflamingobuzz.com",      // TODO: replace with business email
-    phone: "+91 00000 00000",                 // TODO: replace with business number
-    instagram: "pinkflamingobuzz",            // TODO: replace with agency handle (no @)
+    phone: "",                                // leave empty to hide
+    instagram: "pinkflamingobuzz",
     city: "Hyderabad, India"
   },
 
@@ -34,23 +34,23 @@ window.PFB_CONFIG = {
   founders: [
     {
       handle: "its_neelimaaa",
-      name: "Neelima",
-      role: "Co-founder",
-      bio: "Content creator who has partnered with brands across lifestyle, fashion and beauty — now bringing that creator insight to every campaign.",
-      photo: "",
-      followers: null,
-      posts: null,
-      following: null
+      name: "Neelima Tirumala",
+      role: "Co-founder · Digital creator",
+      bio: "Lifestyle stories, skincare, fashion and travel from Hyderabad. Creator turned agency founder who knows brand collabs from both sides.",
+      photo: "assets/img/founder-neelima.webp",
+      followers: 100000,   // snapshot from Instagram, Nov 2026
+      posts: 882,
+      following: 1182
     },
     {
       handle: "soulful_funnygirl",
-      name: "Soulful Funny Girl",   // TODO: replace with real name
-      role: "Co-founder",
-      bio: "Creator known for relatable, feel-good comedy content — turning brand stories into moments audiences actually share.",
-      photo: "",
-      followers: null,
-      posts: null,
-      following: null
+      name: "Nandu Reddy",
+      role: "Co-founder · Fashion & beauty creator",
+      bio: "Fashion, beauty and skincare creator from Hyderabad. Outfit inspo and GRWM content that turns brand stories into moments audiences share.",
+      photo: "assets/img/founder-nandu.webp",
+      followers: 83000,    // snapshot from Instagram, Nov 2026
+      posts: 160,
+      following: 1915
     }
   ],
 
