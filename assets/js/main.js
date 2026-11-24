@@ -271,8 +271,10 @@
   if (c.city) links.push('<li><span><i><svg viewBox="0 0 24 24"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="2.5" fill="currentColor"/></svg></i>' + esc(c.city) + '</span></li>');
   $("#contact-links").innerHTML = links.join("");
 
-  // Static site: the form composes an email in the visitor's mail app.
-  var form = $("#contact-form"), msg = $("#form-msg");
+  // Contact form: delivered to CFG.contact.email via FormSubmit (free, no backend).
+  // The very first submission makes FormSubmit email an activation link to that
+  // inbox; after it is clicked once, every enquiry arrives as an email.
+  var form = $("#contact-form"), msg = $("#form-msg"), sendBtn = form.querySelector('button[type="submit"]');
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var name = form.name.value.trim(), email = form.email.value.trim();
@@ -281,10 +283,23 @@
       p[0].setAttribute("aria-invalid", String(!p[1])); if (!p[1]) bad = true;
     });
     if (bad) { msg.className = "form-msg err"; msg.textContent = "Please add your name and a valid email."; return; }
+    if (form._honey && form._honey.value) return; // bot trap
     var needs = Array.prototype.map.call(form.querySelectorAll('input[name="need"]:checked'), function (i) { return i.value; });
-    var body = "Name: " + name + "\nBrand: " + form.brand.value.trim() + "\nEmail: " + email +
-      "\nInterested in: " + (needs.join(", ") || "-") + "\n\n" + form.message.value.trim();
-    window.location.href = "mailto:" + (c.email || "") + "?subject=" + encodeURIComponent("Campaign enquiry from " + name) + "&body=" + encodeURIComponent(body);
-    msg.className = "form-msg ok"; msg.textContent = "Opening your email app… thanks, we'll be in touch!";
+    var data = {
+      Name: name, Brand: form.brand.value.trim() || "-", Email: email,
+      "Interested in": needs.join(", ") || "-", Message: form.message.value.trim() || "-",
+      _replyto: email, _subject: "New website enquiry from " + name, _template: "table", _captcha: "false"
+    };
+    sendBtn.disabled = true; sendBtn.textContent = "Sending…";
+    msg.className = "form-msg"; msg.textContent = "";
+    fetch("https://formsubmit.co/ajax/" + encodeURIComponent(c.email), {
+      method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(data)
+    }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || String(j.success) === "false") throw new Error(j.message || r.status); }); })
+      .then(function () { form.reset(); msg.className = "form-msg ok"; msg.textContent = "Thanks " + name + "! We've got your enquiry and will be in touch soon."; })
+      .catch(function () {
+        msg.className = "form-msg err";
+        msg.innerHTML = 'Couldn\'t send right now. Please email us at <a href="mailto:' + esc(c.email) + '">' + esc(c.email) + "</a>.";
+      })
+      .then(function () { sendBtn.disabled = false; sendBtn.textContent = "Send enquiry"; });
   });
 })();

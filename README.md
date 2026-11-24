@@ -7,7 +7,7 @@ folder to any static host (Netlify, Vercel, Cloudflare Pages, GitHub Pages, Host
 Everything you'll change lives in **`assets/js/config.js`**:
 - `reels` — Instagram reel shortcodes (the part after `/reel/`). Add, remove or reorder; every card is the same size.
 - `founders` — name, handle, bio, photo, follower/post/following numbers.
-- `contact` — email, phone, agency Instagram handle (currently placeholders, as in the deck).
+- `contact` — email (also where contact-form enquiries are delivered via FormSubmit), phone (leave empty to hide), agency Instagram handle.
 
 Founder photos: drop images into `assets/img/` (square, ~600×600) and set `photo: "assets/img/neelima.jpg"`.
 

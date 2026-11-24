@@ -6,7 +6,7 @@
    ========================================================================== */
 window.PFB_CONFIG = {
   contact: {
-    email: "hello@pinkflamingobuzz.com",      // TODO: replace with business email
+    email: "pinkflamingobuzz@gmail.com",     // shown on the site AND where contact-form enquiries are delivered
     phone: "",                                // leave empty to hide
     instagram: "pinkflamingobuzz",
     city: "Hyderabad, India"
