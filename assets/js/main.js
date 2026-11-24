@@ -297,8 +297,15 @@
     }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || String(j.success) === "false") throw new Error(j.message || r.status); }); })
       .then(function () { form.reset(); msg.className = "form-msg ok"; msg.textContent = "Thanks " + name + "! We've got your enquiry and will be in touch soon."; })
       .catch(function () {
-        msg.className = "form-msg err";
-        msg.innerHTML = 'Couldn\'t send right now. Please email us at <a href="mailto:' + esc(c.email) + '">' + esc(c.email) + "</a>.";
+        // Fallback so no enquiry is ever lost: open the visitor's email app
+        // with the enquiry already written, addressed to CFG.contact.email.
+        var body = ["Name: " + data.Name, "Brand: " + data.Brand, "Email: " + data.Email,
+          "Interested in: " + data["Interested in"], "", data.Message].join("\n");
+        var href = "mailto:" + c.email + "?subject=" + encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(body);
+        msg.className = "form-msg ok";
+        msg.innerHTML = 'Almost done! Your email app has opened with your enquiry ready. Just press <b>Send</b>. ' +
+          'Nothing opened? <a href="' + esc(href) + '">Click here</a> or write to <a href="mailto:' + esc(c.email) + '">' + esc(c.email) + "</a>.";
+        window.location.href = href;
       })
       .then(function () { sendBtn.disabled = false; sendBtn.textContent = "Send enquiry"; });
   });
