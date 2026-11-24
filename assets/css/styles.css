@@ -229,8 +229,7 @@ button { font: inherit; cursor: pointer; }
 .reel-rail {
   display: flex; gap: 18px; overflow-x: auto; overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory; scroll-behavior: smooth;
-  padding: 8px max(var(--gutter), calc((100vw - 1240px) / 2 + var(--gutter))) 28px;
-  scroll-padding-inline: max(var(--gutter), calc((100vw - 1240px) / 2 + var(--gutter)));
+  padding: 8px 0 28px;
   scrollbar-width: none; cursor: grab;
 }
 .reel-rail::-webkit-scrollbar { display: none; }
