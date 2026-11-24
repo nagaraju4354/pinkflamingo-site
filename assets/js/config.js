@@ -9,7 +9,10 @@ window.PFB_CONFIG = {
     email: "pinkflamingobuzz@gmail.com",     // shown on the site AND where contact-form enquiries are delivered
     phone: "",                                // leave empty to hide
     instagram: "pinkflamingobuzz",
-    city: "Hyderabad, India"
+    city: "Hyderabad, India",
+    // Web3Forms access key (free, from web3forms.com, created for the email above).
+    // When set, form enquiries are emailed via Web3Forms with no activation step.
+    formKey: ""
   },
 
   /* ---------------------------------------------------------------------

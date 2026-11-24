@@ -292,8 +292,16 @@
     };
     sendBtn.disabled = true; sendBtn.textContent = "Sending…";
     msg.className = "form-msg"; msg.textContent = "";
-    fetch("https://formsubmit.co/ajax/" + encodeURIComponent(c.email), {
-      method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(data)
+    // Web3Forms (if an access key is set in config) — no activation step.
+    // Otherwise FormSubmit, which needs a one-time activation click.
+    var key = (c.formKey || "").trim(), url = "https://formsubmit.co/ajax/" + encodeURIComponent(c.email), payload = data;
+    if (key) {
+      url = "https://api.web3forms.com/submit";
+      payload = { access_key: key, subject: data._subject, from_name: "Pink Flamingo Buzz website", replyto: email,
+        Name: data.Name, Brand: data.Brand, Email: data.Email, "Interested in": data["Interested in"], Message: data.Message };
+    }
+    fetch(url, {
+      method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(payload)
     }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || String(j.success) === "false") throw new Error(j.message || r.status); }); })
       .then(function () { form.reset(); msg.className = "form-msg ok"; msg.textContent = "Thanks " + name + "! We've got your enquiry and will be in touch soon."; })
       .catch(function () {
