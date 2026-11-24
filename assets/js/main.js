@@ -96,15 +96,16 @@
   var prev = $("#reel-prev"), next = $("#reel-next"), counter = $("#reel-counter"), bar = $("#reel-progress"), pauseBtn = $("#reel-pause");
   var cards = Array.prototype.slice.call(rail.children);
   var current = 0;
-  var centerOf = function (i) { var c = cards[i]; return c.offsetLeft + c.offsetWidth / 2 - rail.clientWidth / 2; };
+  var padL = function () { return parseFloat(getComputedStyle(rail).paddingLeft) || 0; };
+  var centerOf = function (i) { var c = cards[i]; return Math.max(0, c.offsetLeft - padL()); };
   var goTo = function (i, smooth) {
     if (!cards.length) return;
     current = (i + cards.length) % cards.length;
     rail.scrollTo({ left: centerOf(current), behavior: smooth === false ? "auto" : "smooth" });
   };
   var nearest = function () {
-    var mid = rail.scrollLeft + rail.clientWidth / 2, best = 0, bd = Infinity;
-    cards.forEach(function (c, i) { var d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < bd) { bd = d; best = i; } });
+    var x = rail.scrollLeft + padL(), best = 0, bd = Infinity;
+    cards.forEach(function (c, i) { var d = Math.abs(c.offsetLeft - x); if (d < bd) { bd = d; best = i; } });
     return best;
   };
   var updateRail = function () {
@@ -114,7 +115,7 @@
     bar.style.width = ((i + 1) / cards.length * 100) + "%";
   };
   prev.addEventListener("click", function () { goTo(current - 1); kick(); });
-  next.addEventListener("click", function () { goTo(current + 1); kick(); });
+  next.addEventListener("click", function () { goTo(atEnd() ? 0 : current + 1); kick(); });
   rail.addEventListener("scroll", function () { requestAnimationFrame(updateRail); }, { passive: true });
   window.addEventListener("resize", function () { goTo(current, false); });
 
@@ -122,7 +123,8 @@
   // hovers, touches, focuses a reel (e.g. playing it), or presses pause.
   var AUTO_MS = 3500, timer = null, hold = false, userPaused = false, inView = false;
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var tick = function () { if (!hold && !userPaused && inView && !document.hidden) goTo(current + 1); };
+  var atEnd = function () { return rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 4; };
+  var tick = function () { if (!hold && !userPaused && inView && !document.hidden) goTo(atEnd() ? 0 : current + 1); };
   var start = function () { stop(); if (!reduce) timer = setInterval(tick, AUTO_MS); };
   var stop = function () { if (timer) clearInterval(timer); timer = null; };
   var kick = function () { if (!userPaused) start(); };
